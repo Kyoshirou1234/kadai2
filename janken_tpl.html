@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<script src="js/jquery-2.1.3.min.js"></script>
+<link rel="stylesheet" href="css/sample.css">
+<title>じゃんけん</title>
+</head>
+<body>
+
+<header>
+  <h1>じゃんけんアプリ</h1>
+</header>
+
+<main>
+  <div class = "div" id = "score">勝ち：0　負け：0</div>
+  <div class = "div" id="aiko">あなたの手を選択してください。</div>
+  <div class = "div" id="judgment"><br></div>
+  <ul>
+    <li id="gu_btn"><img src="./img/janken_gu.png" alt=""></li>
+    <li id="cho_btn"><img src="./img/janken_choki.png" alt=""></li>
+    <li id="par_btn"><img src="./img/janken_pa.png" alt=""></li>
+  </ul>
+
+  <br>
+    <p class = div>コンピュータの出した手は…？</p>
+    <p><span class = "div" id="pc_hands"></span></p>
+    
+    <br>
+
+  <div class = "button"><button class = "div" id = "reset">スコアリセット</button></div>
+</main>
+
+<script>
+
+var score = [0,0];
+
+//グーを出した場合
+//onclickのとき、グローバル関数参照できなさそう
+$("#gu_btn").on("click",function(){
+const r0 = 0;
+const r1 = (Math.floor(Math.random()*3));
+Result(r1); //コンピュータの手を表示
+console.log(r0[0]);
+
+let str = Jugement(r0,r1)
+Print_Jugement(str); //じゃんけんの判定を表示
+
+Score(str);//スコア表示
+
+});
+
+//チョキを出した場合
+$("#cho_btn").on("click",function(score){
+const r0 = 1;
+const r1 =  (Math.floor(Math.random()*3));
+Result(r1); //コンピュータの手を表示、格納
+
+let str = Jugement(r0,r1)
+Print_Jugement(str); //じゃんけんの判定を表示
+
+Score(str);//スコア表示
+});
+
+//パーを出した場合
+$("#par_btn").on("click",function(){
+const r0 = 2;
+const r1 =  (Math.floor(Math.random()*3));
+Result(r1); //コンピュータの手を表示、格納
+
+let str = Jugement(r0,r1)
+Print_Jugement(str); //じゃんけんの判定を表示
+
+Score(str);//スコア表示
+});
+
+//コンピュータが出した手を表示、返す
+function Result(r1){
+if(r1 == 0){
+  $('#pc_hands').html('<img src="./img/janken_gu.png" alt="">');
+}
+else if(r1 == 1){
+  $('#pc_hands').html('<img src="./img/janken_choki.png" alt="">');
+}
+else{
+  $('#pc_hands').html('<img src="./img/janken_pa.png" alt="">');
+}
+}
+
+//勝ち・負け・引き分けの判定
+function Jugement(r0, r1){
+  let str;
+  let abs_r = Math.abs(r0 - r1);
+
+  if(abs_r == 0){str = "あいこ";}
+
+  else if(abs_r ==  1){
+  if(r0 < r1){str = "勝ち";}
+  else{str = "負け";}
+  }
+
+  else{
+    if(r0 < r1){str = "負け";}
+    else{str = "勝ち";}
+  }
+
+  return str;
+}
+
+//判定結果の表示
+function Print_Jugement(jugement){
+  //id="judgment"への出力方法
+  let str;
+  console.log(jugement);
+  if(jugement == "あいこ"){ 
+    $('#judgment').html('あいこで…');
+  }
+  else{
+    str = "あなたの" + jugement + "です！"; 
+    $('#judgment').html(str);
+  }
+
+  
+}
+
+//スコア表示
+function Score(str){
+if(str == "勝ち"){score[0] += 1;}
+if(str == "負け"){score[1] += 1;}
+let score_print = "勝ち：" + score[0] + "　負け：" + score[1];
+$('#score').html(score_print);
+}
+
+//リセットボタン
+function Reset(){
+  score = [0,0];
+  let score_print = "勝ち：" + score[0] + "　負け：" + score[1];
+  $('#score').html(score_print);
+  $('#pc_hands').html("");
+  $('#judgment').html("<br>");
+}
+
+//リセットボタンクリック処理
+$("#reset").on("click",function(){
+ Reset();
+});
+
+</script>
+
+<footer></footer>
+
+</body>
+</html>
